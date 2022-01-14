@@ -1,6 +1,10 @@
 import 'package:flutter/services.dart';
 
 class MoneyTextInputFormatter extends TextInputFormatter {
+  final int? maxLeft;
+
+  MoneyTextInputFormatter({this.maxLeft});
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
@@ -8,7 +12,7 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       return newValue;
     }
 
-    String newText = format(oldValue.text, newValue.text);
+    String newText = format(oldValue.text, newValue.text, maxLeft: maxLeft);
 
     return newValue.copyWith(
         text: newText,
@@ -16,7 +20,9 @@ class MoneyTextInputFormatter extends TextInputFormatter {
   }
 
   static String format(String oldText, String newText,
-      {String decimalSeparator = ',', String thousandSeparator = ' '}) {
+      {String decimalSeparator = ',',
+      String thousandSeparator = ' ',
+      int? maxLeft}) {
     assert(decimalSeparator != thousandSeparator);
     if (newText.substring(0, 1) == '0' &&
         newText.length > 1 &&
@@ -28,18 +34,29 @@ class MoneyTextInputFormatter extends TextInputFormatter {
     }
     newText = newText.replaceAll(thousandSeparator, '');
     String result = '';
-    String left = newText;
+    String left = '';
     if (newText.contains(decimalSeparator)) {
       int i = newText.indexOf(decimalSeparator);
       if (i == 0) return oldText;
       if (newText.contains(decimalSeparator, i + 1)) return oldText;
       left = newText.substring(0, i);
+      if (maxLeft != null) {
+        if (left.length > maxLeft) {
+          return oldText;
+        }
+      }
       String right = newText.substring(i + 1);
       if (right.length > 2) return oldText;
       left = MoneyTextInputFormatter.thousand(left,
           thousandSeparator: thousandSeparator);
       result = left + decimalSeparator + right;
     } else {
+      left = newText;
+      if (maxLeft != null) {
+        if (left.length > maxLeft) {
+          return oldText;
+        }
+      }
       result = MoneyTextInputFormatter.thousand(left,
           thousandSeparator: thousandSeparator);
     }

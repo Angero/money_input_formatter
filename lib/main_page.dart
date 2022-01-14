@@ -11,7 +11,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final TextEditingController _moneyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final _moneyFormatter = MoneyTextInputFormatter();
+  final _moneyFormatter = MoneyTextInputFormatter(maxLeft: 6);
 
   @override
   void initState() {

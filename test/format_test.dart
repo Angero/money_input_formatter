@@ -40,4 +40,18 @@ void main() {
     expect(MoneyTextInputFormatter.zero('123,45'), '123,45');
   });
 
+  test('max', () {
+    expect(MoneyTextInputFormatter.format('', '12', maxLeft: 3), '12');
+    expect(MoneyTextInputFormatter.format('', '123', maxLeft: 3), '123');
+    expect(MoneyTextInputFormatter.format('', '1234', maxLeft: 3), '');
+    expect(MoneyTextInputFormatter.format('', '12345', maxLeft: 4), '');
+    expect(MoneyTextInputFormatter.format('', '12345', maxLeft: 6), '12 345');
+
+    expect(MoneyTextInputFormatter.format('', '123,45', maxLeft: 3), '123,45');
+    expect(MoneyTextInputFormatter.format('', '1234,56', maxLeft: 3), '');
+    expect(MoneyTextInputFormatter.format('', '12345,67', maxLeft: 4), '');
+    expect(MoneyTextInputFormatter.format('', '123456,78', maxLeft: 6), '123 456,78');
+  });
+
+
 }
