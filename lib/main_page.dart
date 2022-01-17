@@ -11,7 +11,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final TextEditingController _moneyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final _moneyFormatter = MoneyTextInputFormatter(maxLeft: 6);
+  final _moneyFormatter = MoneyTextInputFormatter(
+      decimalSeparator: '.', thousandSeparator: '\'', maxLeft: 6, emptyText: '0');
 
   @override
   void initState() {
@@ -51,18 +52,14 @@ class _MainPageState extends State<MainPage> {
         autofocus: true,
         controller: _moneyController,
         inputFormatters: [_moneyFormatter],
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: const InputDecoration(
-          hintText: '0,00',
+        keyboardType: _moneyFormatter.keyboardType(),
+        decoration: InputDecoration(
+          hintText: _moneyFormatter.hintText,
         ),
-        onEditingComplete: () {
-          _moneyController.text = _moneyController.text + ' ₽';
-        },
       ),
       onFocusChange: (hasFocus) {
         if (!hasFocus) {
-          _moneyController.text =
-              MoneyTextInputFormatter.zero(_moneyController.text);
+          _moneyController.text = _moneyFormatter.zero(_moneyController.text);
         }
       },
     );

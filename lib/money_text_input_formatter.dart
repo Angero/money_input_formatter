@@ -1,9 +1,19 @@
 import 'package:flutter/services.dart';
 
-class MoneyTextInputFormatter extends TextInputFormatter {
-  final int? maxLeft;
+/// It you do not want to use kopecks set decimalSeparator empty like this.
+/// decimalSeparator = ''
 
-  MoneyTextInputFormatter({this.maxLeft});
+class MoneyTextInputFormatter extends TextInputFormatter {
+  final String decimalSeparator;
+  final String thousandSeparator;
+  final int? maxLeft;
+  final String emptyText;
+
+  MoneyTextInputFormatter(
+      {this.decimalSeparator = ',',
+      this.thousandSeparator = ' ',
+      this.maxLeft,
+      this.emptyText = '0,00'});
 
   @override
   TextEditingValue formatEditUpdate(
@@ -12,7 +22,11 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       return newValue;
     }
 
-    String newText = format(oldValue.text, newValue.text, maxLeft: maxLeft);
+    String newText = '';
+    newText = format(oldValue.text, newValue.text,
+        decimalSeparator: decimalSeparator,
+        thousandSeparator: thousandSeparator,
+        maxLeft: maxLeft);
 
     return newValue.copyWith(
         text: newText,
@@ -35,7 +49,7 @@ class MoneyTextInputFormatter extends TextInputFormatter {
     newText = newText.replaceAll(thousandSeparator, '');
     String result = '';
     String left = '';
-    if (newText.contains(decimalSeparator)) {
+    if (newText.contains(decimalSeparator) && decimalSeparator != '') {
       int i = newText.indexOf(decimalSeparator);
       if (i == 0) return oldText;
       if (newText.contains(decimalSeparator, i + 1)) return oldText;
@@ -77,10 +91,15 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       int finish = start + 3;
       result += s.substring(start, finish) + thousandSeparator;
     }
-    return result.trim();
+    if (result.substring(result.length - 1) == thousandSeparator) {
+      return result.substring(0, result.length - 1);
+    } else {
+      return result;
+    }
   }
 
-  static String zero(String s, {String decimalSeparator = ','}) {
+  String zero(String s) {
+    if (decimalSeparator.isEmpty) return s;
     if (s.isEmpty) return '0' + decimalSeparator + '00';
     if (s.contains(decimalSeparator)) {
       int i = s.indexOf(decimalSeparator);
@@ -96,4 +115,11 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       return s + decimalSeparator + '00';
     }
   }
+
+  TextInputType keyboardType() {
+    return TextInputType.numberWithOptions(
+        decimal: decimalSeparator.isNotEmpty);
+  }
+
+  String get hintText => emptyText;
 }

@@ -18,7 +18,8 @@ void main() {
     expect(MoneyTextInputFormatter.format('', '1234,5'), '1 234,5');
     expect(MoneyTextInputFormatter.format('', '1234,56'), '1 234,56');
     expect(MoneyTextInputFormatter.format('777', '1234,567'), '777');
-    expect(MoneyTextInputFormatter.format('777', '12345678,90'), '12 345 678,90');
+    expect(
+        MoneyTextInputFormatter.format('777', '12345678,90'), '12 345 678,90');
   });
 
   test('thousand', () {
@@ -32,12 +33,25 @@ void main() {
     expect(MoneyTextInputFormatter.thousand('1234567890'), '1 234 567 890');
   });
 
+  test('thousand separator', () {
+    expect(MoneyTextInputFormatter.thousand('123', thousandSeparator: '_'), '123');
+    expect(MoneyTextInputFormatter.thousand('1234', thousandSeparator: '_'), '1_234');
+    expect(MoneyTextInputFormatter.thousand('12345', thousandSeparator: '_'), '12_345');
+    expect(MoneyTextInputFormatter.thousand('123456', thousandSeparator: '_'), '123_456');
+    expect(MoneyTextInputFormatter.thousand('1234567', thousandSeparator: '_'), '1_234_567');
+    expect(MoneyTextInputFormatter.thousand('12345678', thousandSeparator: '_'), '12_345_678');
+    expect(MoneyTextInputFormatter.thousand('123456789', thousandSeparator: '_'), '123_456_789');
+    expect(MoneyTextInputFormatter.thousand('1234567890', thousandSeparator: '_'), '1_234_567_890');
+  });
+
+
   test('zero', () {
-    expect(MoneyTextInputFormatter.zero(''), '0,00');
-    expect(MoneyTextInputFormatter.zero('123'), '123,00');
-    expect(MoneyTextInputFormatter.zero('123,'), '123,00');
-    expect(MoneyTextInputFormatter.zero('123,4'), '123,40');
-    expect(MoneyTextInputFormatter.zero('123,45'), '123,45');
+    final _moneyFormatter = MoneyTextInputFormatter();
+    expect(_moneyFormatter.zero(''), '0,00');
+    expect(_moneyFormatter.zero('123'), '123,00');
+    expect(_moneyFormatter.zero('123,'), '123,00');
+    expect(_moneyFormatter.zero('123,4'), '123,40');
+    expect(_moneyFormatter.zero('123,45'), '123,45');
   });
 
   test('max', () {
@@ -50,8 +64,7 @@ void main() {
     expect(MoneyTextInputFormatter.format('', '123,45', maxLeft: 3), '123,45');
     expect(MoneyTextInputFormatter.format('', '1234,56', maxLeft: 3), '');
     expect(MoneyTextInputFormatter.format('', '12345,67', maxLeft: 4), '');
-    expect(MoneyTextInputFormatter.format('', '123456,78', maxLeft: 6), '123 456,78');
+    expect(MoneyTextInputFormatter.format('', '123456,78', maxLeft: 6),
+        '123 456,78');
   });
-
-
 }
