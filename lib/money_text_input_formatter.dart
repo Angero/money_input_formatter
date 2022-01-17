@@ -120,4 +120,22 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       TextInputType.numberWithOptions(decimal: decimalSeparator.isNotEmpty);
 
   String get hintText => emptyText;
+
+  static String fromInt(int? value) {
+    if (value == null) return '';
+    if (value == 0) return '';
+    return thousand(value.toString());
+  }
+
+  static String fromDouble(double? value) {
+    if (value == null) return '';
+    if (value == 0) return '';
+    return thousand(value.floor().toString());
+  }
+
+  static double toDouble(String value) {
+    value = value.replaceAll(' ', '').trim();
+    return double.parse(value);
+  }
+
 }
