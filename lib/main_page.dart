@@ -52,7 +52,7 @@ class _MainPageState extends State<MainPage> {
         autofocus: true,
         controller: _moneyController,
         inputFormatters: [_moneyFormatter],
-        keyboardType: _moneyFormatter.keyboardType(),
+        keyboardType: _moneyFormatter.keyboardType,
         decoration: InputDecoration(
           hintText: _moneyFormatter.hintText,
         ),

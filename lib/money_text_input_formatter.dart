@@ -116,10 +116,8 @@ class MoneyTextInputFormatter extends TextInputFormatter {
     }
   }
 
-  TextInputType keyboardType() {
-    return TextInputType.numberWithOptions(
-        decimal: decimalSeparator.isNotEmpty);
-  }
+  TextInputType get keyboardType =>
+      TextInputType.numberWithOptions(decimal: decimalSeparator.isNotEmpty);
 
   String get hintText => emptyText;
 }
