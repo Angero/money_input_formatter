@@ -34,16 +34,25 @@ void main() {
   });
 
   test('thousand separator', () {
-    expect(MoneyTextInputFormatter.thousand('123', thousandSeparator: '_'), '123');
-    expect(MoneyTextInputFormatter.thousand('1234', thousandSeparator: '_'), '1_234');
-    expect(MoneyTextInputFormatter.thousand('12345', thousandSeparator: '_'), '12_345');
-    expect(MoneyTextInputFormatter.thousand('123456', thousandSeparator: '_'), '123_456');
-    expect(MoneyTextInputFormatter.thousand('1234567', thousandSeparator: '_'), '1_234_567');
-    expect(MoneyTextInputFormatter.thousand('12345678', thousandSeparator: '_'), '12_345_678');
-    expect(MoneyTextInputFormatter.thousand('123456789', thousandSeparator: '_'), '123_456_789');
-    expect(MoneyTextInputFormatter.thousand('1234567890', thousandSeparator: '_'), '1_234_567_890');
+    expect(
+        MoneyTextInputFormatter.thousand('123', thousandSeparator: '_'), '123');
+    expect(MoneyTextInputFormatter.thousand('1234', thousandSeparator: '_'),
+        '1_234');
+    expect(MoneyTextInputFormatter.thousand('12345', thousandSeparator: '_'),
+        '12_345');
+    expect(MoneyTextInputFormatter.thousand('123456', thousandSeparator: '_'),
+        '123_456');
+    expect(MoneyTextInputFormatter.thousand('1234567', thousandSeparator: '_'),
+        '1_234_567');
+    expect(MoneyTextInputFormatter.thousand('12345678', thousandSeparator: '_'),
+        '12_345_678');
+    expect(
+        MoneyTextInputFormatter.thousand('123456789', thousandSeparator: '_'),
+        '123_456_789');
+    expect(
+        MoneyTextInputFormatter.thousand('1234567890', thousandSeparator: '_'),
+        '1_234_567_890');
   });
-
 
   test('zero', () {
     final _moneyFormatter = MoneyTextInputFormatter();
@@ -66,5 +75,21 @@ void main() {
     expect(MoneyTextInputFormatter.format('', '12345,67', maxLeft: 4), '');
     expect(MoneyTextInputFormatter.format('', '123456,78', maxLeft: 6),
         '123 456,78');
+  });
+
+  test('no digits', () {
+    expect(MoneyTextInputFormatter.format('', '12'), '12');
+    expect(MoneyTextInputFormatter.format('', '1x2'), '');
+    expect(MoneyTextInputFormatter.format('', '1,2'), '1,2');
+    expect(MoneyTextInputFormatter.format('', '1.2'), '1,2');
+    expect(MoneyTextInputFormatter.format('', '1,2', decimalSeparator: ''), '');
+    expect(MoneyTextInputFormatter.format('', '1.2', decimalSeparator: ''), '');
+    expect(
+        MoneyTextInputFormatter.format('', '12', decimalSeparator: ''), '12');
+
+    expect(MoneyTextInputFormatter.format('', '1 234'), '1 234');
+    expect(MoneyTextInputFormatter.format('', '1x234'), '');
+    expect(MoneyTextInputFormatter.format('', '1234,5'), '1 234,5');
+    expect(MoneyTextInputFormatter.format('', '1234.5'), '1 234,5');
   });
 }

@@ -12,7 +12,7 @@ class _MainPageState extends State<MainPage> {
   final TextEditingController _moneyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final _moneyFormatter = MoneyTextInputFormatter(
-      decimalSeparator: '.', thousandSeparator: '\'', maxLeft: 6, emptyText: '0');
+      decimalSeparator: ',', thousandSeparator: ' ', maxLeft: 6, emptyText: '0');
 
   @override
   void initState() {

@@ -38,6 +38,14 @@ class MoneyTextInputFormatter extends TextInputFormatter {
       String thousandSeparator = ' ',
       int? maxLeft}) {
     assert(decimalSeparator != thousandSeparator);
+    RegExp regExp;
+    if (decimalSeparator.isEmpty) {
+      regExp = RegExp(r'^[0-9 ]+$');
+    } else {
+      regExp = RegExp(r'^[0-9., ]+$');
+    }
+    newText = newText.replaceAll('.', ',');
+    if (!regExp.hasMatch(newText)) return oldText;
     if (newText.substring(0, 1) == '0' &&
         newText.length > 1 &&
         newText.substring(1, 2) != decimalSeparator) {
@@ -80,6 +88,7 @@ class MoneyTextInputFormatter extends TextInputFormatter {
 
   static String thousand(String s, {String thousandSeparator = ' '}) {
     String result = '';
+    s = s.replaceAll(thousandSeparator, '');
     int count = (s.length / 3).floor();
     if (count == 0) return s;
     int shift = s.length % 3;
@@ -137,5 +146,4 @@ class MoneyTextInputFormatter extends TextInputFormatter {
     value = value.replaceAll(' ', '').trim();
     return double.parse(value);
   }
-
 }
